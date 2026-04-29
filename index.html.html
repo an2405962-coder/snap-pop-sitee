@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap & Pop | Our Packages</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <div class="logo-area">
+                <img src="logo.png" alt="Snap & Pop Logo" class="logo">
+            </div>
+            <h1 class="main-title">OUR PACKAGES</h1>
+        </header>
+
+        <div class="packages-grid">
+            
+            <div class="card basic">
+                <div class="card-header">
+                    <h2>BASIC</h2>
+                    <span>3 HOURS</span>
+                </div>
+                <ul class="features">
+                    <li>360° Video Booth</li>
+                    <li>Instant Slow Motion</li>
+                    <li>Fun Props</li>
+                    <li>Friendly Attendant</li>
+                </ul>
+                <div class="price-tag">3500 <span>EGP</span></div>
+            </div>
+
+            <div class="card premium">
+                <div class="best-seller">PREMIUM</div>
+                <div class="card-header">
+                    <h2>PREMIUM</h2>
+                    <span>4 HOURS</span>
+                </div>
+                <ul class="features">
+                    <li>360° Video Booth</li>
+                    <li>Instant Slow Motion</li>
+                    <li>Custom Overlay</li>
+                    <li>LED Lights Setup</li>
+                </ul>
+                <div class="price-tag">4500 <span>EGP</span></div>
+            </div>
+
+            <div class="card standard">
+                <div class="card-header">
+                    <h2>STANDARD</h2>
+                    <span>5 HOURS</span>
+                </div>
+                <ul class="features">
+                    <li>360° Video Booth</li>
+                    <li>Instant Slow Motion</li>
+                    <li>Unlimited Fun</li>
+                    <li>Digital Gallery</li>
+                </ul>
+                <div class="price-tag">5500 <span>EGP</span></div>
+            </div>
+
+        </div>
+
+        <div class="add-ons">
+            <h3>ADD-ONS</h3>
+            <div class="addon-items">
+                <div class="item">Extra Hour: 700 EGP</div>
+                <div class="item">Audio Guestbook: 4500 EGP</div>
+                <div class="item">Custom Design: 500 EGP</div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+function sendToWhatsApp() {
+    // 1. رقم تليفونك اللي هيستقبل الحجز (تأكد إنه مكتوب صح بالصيغة الدولية)
+    let myNumber = "201112774059"; 
+
+    // 2. سحب الداتا الحقيقية من الخانات باستخدام الـ ID
+    let name = document.getElementById('userName').value;
+    let phone = document.getElementById('userPhone').value;
+    let package = document.getElementById('userPackage').value;
+    let date = document.getElementById('eventDate').value;
+
+    // 3. تأكد إن العميل مسبش خانة فاضية
+    if (name === "" || phone === "" || package === "" || date === "") {
+        alert("يا ريت تملأ كل البيانات عشان نقدر نساعدك! 😊");
+        return;
+    }
+
+    // 4. تنسيق "الداتا" اللي هتوصلك على الواتساب
+    // الرموز %0A معناها سطر جديد (Enter) عشان الرسالة تكون منظمة
+    let message = "*طلب حجز جديد من الموقع* 📸%0A%0A" + 
+                  "*الاسم:* " + name + "%0A" + 
+                  "*رقم العميل:* " + phone + "%0A" + 
+                  "*الباقة المختارة:* " + package + "%0A" + 
+                  "*تاريخ المناسبة:* " + date + "%0A%0A" +
+                  "يتم الرد لتأكيد الحجز..";
+
+    // 5. إنشاء اللينك وفتح الواتساب
+    let url = "https://wa.me/" + myNumber + "?text=" + message;
+    
+    // بيفتح الواتساب في صفحة جديدة
+    window.open(url, '_blank').focus();
+}
+</script>}
+</script>
+</body>
+</html>
+<div class="booking-section">
+    <h3>احجز عبر الواتساب 💬</h3>
+    <div class="booking-form">
+        <div class="form-group">
+            <input type="text" id="userName" placeholder="الاسم بالكامل" required>
+        </div>
+        
+        <div class="form-group">
+            <input type="tel" id="userPhone" placeholder="رقم موبايلك" required>
+        </div>
+
+        <div class="form-group">
+            <select id="userPackage" required>
+                <option value="" disabled selected>اختار الباقة</option>
+                <option value="BASIC">الباقة الأساسية (BASIC)</option>
+                <option value="PREMIUM">الباقة المميزة (PREMIUM)</option>
+                <option value="STANDARD">الباقة القياسية (STANDARD)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input type="date" id="eventDate" required>
+        </div>
+
+        <button type="button" onclick="sendToWhatsApp()" class="submit-btn">إرسال عبر واتساب</button>
+    </div>
+</div>
