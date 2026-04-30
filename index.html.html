@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuttle Pro | حجز ودفع ذكي</title>
+    <!-- ربط ملف الاستيل الخاص بك -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        #payment-options {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            border: 1px dashed var(--gold);
+            text-align: center;
+        }
+        .hidden { display: none !important; }
+        .wallet-btn {
+            background: #d32f2f; /* لون المحافظ الشهير */
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الترحيب -->
+    <div class="welcome-container" id="welcome-screen">
+        <div class="welcome-content">
+            <h1 id="welcome-text" style="color:white; font-size: 1.8rem;"></h1>
+            <h2 id="brand-name" class="glow-text">SHUTTLE PRO</h2>
+        </div>
+    </div>
+
+    <div class="main-container" id="app-content" style="opacity: 0;">
+        <!-- المرحلة 1: اختيار الباقة -->
+        <div id="page-1">
+            <h1 style="color:var(--gold); font-size: 2.5rem; margin-bottom: 10px;">أهلاً بك في شاتل برو</h1>
+            <p style="margin-bottom: 30px;">اختر باقة الاشتراك المناسبة لبدء رحلتك</p>
+            <div class="packages-grid">
+                <div class="card" onclick="selectPkg('10 أيام', 600)">
+                    <h2>باقة 10 أيام</h2>
+                    <div class="price-tag">600 <span>EGP</span></div>
+                    <button class="select-pkg-btn">اشتراك</button>
+                </div>
+                <div class="card premium" onclick="selectPkg('20 يوم', 1200)">
+                    <div class="best-seller">الأكثر طلباً</div>
+                    <h2>باقة 20 يوم</h2>
+                    <div class="price-tag">1200 <span>EGP</span></div>
+                    <button class="select-pkg-btn">اشتراك</button>
+                </div>
+                <div class="card" onclick="selectPkg('30 يوم', 2400)">
+                    <h2>باقة 30 يوم</h2>
+                    <div class="price-tag">2400 <span>EGP</span></div>
+                    <button class="select-pkg-btn">اشتراك</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- المرحلة 2: البيانات والدفع -->
+        <div id="page-2" class="hidden">
+            <div class="booking-section">
+                <h2 id="pkg-title" style="color:var(--gold); margin-bottom: 20px;"></h2>
+                <div class="booking-form">
+                    <input type="text" id="uName" placeholder="الاسم بالكامل" required>
+                    <input type="tel" id="uPhone" placeholder="رقم الموبايل (واتساب)" required>
+                    
+                    <select id="uPoint" required>
+                        <option value="" disabled selected>اختر نقطة الالتقاء</option>
+                        <option value="ميدان الجيزة">ميدان الجيزة</option>
+                        <option value="دائري المرج">دائري المرج</option>
+                        <option value="العبور - صينية الحي الثاني">العبور - صينية الحي الثاني</option>
+                        <option value="قليوب المحطة">قليوب المحطة</option>
+                        <option value="كوبري مسترد">كوبري مسترد</option>
+                        <option value="الشروق">مدخل الشروق</option>
+                        <option value="مدينتي">مدينتي - الحركة</option>
+                    </select>
+
+                    <div style="background:#1a1a1a; padding:15px; border-radius:15px; border:1px solid #333; margin-top:10px;">
+                        <p style="margin-bottom:12px; font-size:0.95rem;">خطوة الدفع (إلزامي):</p>
+                        
+                        <!-- خيار إنستا باي الذكي -->
+                        <button type="button" class="submit-btn" style="background:#4a148c; color:white; width:100%; border:none; margin-bottom:10px;" onclick="handleSmartPayment()">
+                            فتح تطبيق InstaPay للدفع 💳
+                        </button>
+
+                        <!-- خيار المحافظ الإلكترونية -->
+                        <div id="payment-options">
+                            <p style="font-size:0.9rem; color:var(--gold); margin-bottom: 10px;">أو حول للمحفظة / إنستا باي يدوي:</p>
+                            <strong style="font-size:1.3rem; letter-spacing:1px; color: white;">01112774059</strong>
+                            <p style="font-size:0.75rem; color:#aaa; margin-top:8px;">(فودافون كاش - أورنج كاش - اتصالات كاش)</p>
+                        </div>
+                    </div>
+
+                    <div id="receipt-area" style="display:none; margin-top:20px;">
+                        <p style="font-size:0.9rem; margin-bottom:10px; text-align: right;">ارفع سكرين شوت الدفع:</p>
+                        <input type="file" id="uReceipt" accept="image/*" required>
+                        <button class="submit-btn" id="final-btn" onclick="finishBooking()" style="display:block; margin-top:20px; width:100%;">تأكيد الحجز وإرسال البيانات ✅</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. أنيميشن الترحيب
+        const wText = document.getElementById("welcome-text");
+        const bName = document.getElementById("brand-name");
+        const intro = "Welcome to Shuttle Pro...";
+        let idx = 0;
+
+        function type() {
+            if (idx < intro.length) { 
+                wText.innerHTML += intro.charAt(idx); 
+                idx++; 
+                setTimeout(type, 80); 
+            } else { 
+                setTimeout(() => { 
+                    wText.style.display="none"; 
+                    bName.style.display="block"; 
+                    setTimeout(() => { 
+                        document.getElementById("welcome-screen").style.opacity="0";
+                        setTimeout(() => { 
+                            document.getElementById("welcome-screen").style.display="none"; 
+                            document.getElementById("app-content").style.opacity="1"; 
+                        }, 1000);
+                    }, 1500); 
+                }, 800); 
+            }
+        }
+        window.onload = type;
+
+        // 2. اختيار الباقة
+        let selectedPkg = "";
+        function selectPkg(name, price) {
+            selectedPkg = name;
+            document.getElementById("pkg-title").innerText = `حجز ${name} (${price} EGP)`;
+            document.getElementById("page-1").classList.add("hidden");
+            document.getElementById("page-2").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 3. التوجيه الذكي للمتجر أو التطبيق
+        function handleSmartPayment() {
+            const startTime = Date.now();
+            window.location.href = "instapay://payment?pa=01112774059@instapay";
+
+            setTimeout(() => {
+                if (Date.now() - startTime < 1500) {
+                    window.location.href = "https://play.google.com/store/apps/details?id=com.fawry.nbe.instapay";
+                }
+            }, 1000);
+
+            document.getElementById("payment-options").style.display = "block";
+            document.getElementById("receipt-area").style.display = "block";
+            
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 500);
+        }
+
+        // 4. إنهاء الحجز
+        function finishBooking() {
+            const name = document.getElementById("uName").value;
+            const phone = document.getElementById("uPhone").value;
+            const file = document.getElementById("uReceipt").value;
+            const point = document.getElementById("uPoint").value;
+
+            if(!name || !phone || !file || !point) {
+                alert("يرجى إكمال كافة البيانات ورفع الإيصال! 😊");
+                return;
+            }
+
+            const msg = `*طلب حجز شاتل برو مؤكد*%0A*الاسم:* ${name}%0A*الموبايل:* ${phone}%0A*الباقة:* ${selectedPkg}%0A*نقطة التجمع:* ${point}%0A*الحالة:* تم الدفع ورفع الإيصال`;
+            window.open(`https://wa.me/201112774059?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
